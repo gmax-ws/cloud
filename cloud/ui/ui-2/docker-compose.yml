@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  ui-2:
+    volumes:
+      - $LOGGER_VOLUME
+    environment:
+      ENCRYPT_KEY: $ENCRYPT_KEY
+      SPRING_MAIN_BANNER_MODE: $SPRING_MAIN_BANNER_MODE
+      AUTH_USERNAME: $AUTH_USERNAME
+      AUTH_PASSWORD: $AUTH_PASSWORD
+      SERVICE_GATEWAY: $SERVICE_GATEWAY
+      KEYCLOAK_REALM: $KEYCLOAK_REALM
+      CLIENT_ID: $CLIENT_ID
+      CLIENT_SECRET: $CLIENT_SECRET
+      CLIENT_SCOPE: $CLIENT_SCOPE
+      KEYCLOAK_URL: $KEYCLOAK_URL
+      UI2_NAME: $UI2_NAME
+      UI2_IP: $UI2_IP
+      UI2_PORT: $UI2_PORT
+      LOG_PATH: $LOG_PATH
+    build: ""
+    image: $UI2_IMAGE
+    container_name: $UI2_CONTAINER
+    restart: always
+    ports:
+      - $UI2_PORT:$UI2_PORT
+    networks:
+      cloud:
+        ipv4_address: $UI2_IP
+    healthcheck:
+      test: nc -z -v 0.0.0.0 $UI2_PORT
+      interval: 5s
+      timeout: 1s
+      retries: 3
+
+networks:
+  cloud:
+    name: $NETWORK_NAME
+    ipam:
+      driver: default
+      config:
+        - subnet: $NETWORK_SUBNET
+          gateway: $NETWORK_GATEWAY

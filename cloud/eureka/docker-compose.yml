@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  eureka:
+    volumes:
+      - $LOGGER_VOLUME
+    environment:
+      ENCRYPT_KEY: $ENCRYPT_KEY
+      SPRING_MAIN_BANNER_MODE: $SPRING_MAIN_BANNER_MODE
+      CONFIG_ENABLED: $CONFIG_ENABLED
+      CONFIG_PROFILE: $CONFIG_PROFILE
+      CONFIG_SERVER: $CONFIG_SERVER
+      EUREKA_NAME: $EUREKA_NAME
+      EUREKA_PORT: $EUREKA_PORT
+      EUREKA_DC: $EUREKA_DC
+      LOG_PATH: $LOG_PATH
+    build: ""
+    image: $EUREKA_IMAGE
+    container_name: $EUREKA_CONTAINER
+    restart: always
+    ports:
+      - $EUREKA_PORT:$EUREKA_PORT
+    networks:
+      cloud:
+        ipv4_address: $EUREKA_IP
+    healthcheck:
+      test: nc -z -v 0.0.0.0 $EUREKA_PORT
+      interval: 5s
+      timeout: 1s
+      retries: 3
+
+networks:
+  cloud:
+    name: $NETWORK_NAME
+    ipam:
+      driver: default
+      config:
+        - subnet: $NETWORK_SUBNET
+          gateway: $NETWORK_GATEWAY
+

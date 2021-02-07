@@ -1,0 +1,24 @@
+server:
+  port: ${EUREKA_PORT}
+
+info:
+  component: Eureka
+  description: Service Registry (Discovery)
+
+eureka:
+  datacenter: ${EUREKA_DC}
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 10
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  server:
+    responseCacheUpdateIntervalMs: 500
+    renewalThresholdUpdateIntervalMs: 10000
+    responseCacheAutoExpirationInSeconds: 1
+    evictionIntervalTimerInMs: 1000
+
+endpoints:
+  shutdown:
+    enabled: true

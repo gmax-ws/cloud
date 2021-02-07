@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: ${UI1_NAME}
+  security:
+    user:
+      name: ${AUTH_USERNAME}
+      password: ${AUTH_PASSWORD}
+      roles: manager
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+    timeout: 15m
+  thymeleaf:
+    cache: false
+
+keycloak:
+  realm: ${KEYCLOAK_REALM}
+  client-id: ${CLIENT_ID}
+  client-secret: ${CLIENT_SECRET}
+  scope: ${CLIENT_SCOPE}
+  token-uri: ${KEYCLOAK_URL}/token
+
+server:
+  port: ${UI1_PORT}
+  compression:
+    enabled: true
+    mime-types: application/json, application/xml, text/html, text/xml, text/plain
+
+logging:
+  level:
+    root: INFO
+  path: ${LOG_PATH}
+  file:
+    name: ${logging.path}/${spring.application.name}.log
+
+base-uri:
+  orders: ${SERVICE_GATEWAY}/orders/api

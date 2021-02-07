@@ -1,0 +1,66 @@
+server:
+  port: ${ZUUL_PORT}
+#  ssl:
+#    key-store: classpath:certificates.p12
+#    key-store-password: '{cipher}6f07897eab700bb474ede93f12ec3fd66082dc1391d723fb86a5a5737fbffc2f'
+#    keyStoreType: PKCS12
+#    keyAlias: certificates
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: false
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_URI}
+
+ribbon:
+  eureka:
+    enabled: true
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 2
+  OkToRetryOnAllOperations: true
+  ServerListRefreshInterval: 1000
+  ConnectTimeout: 3000
+  ReadTimeout: 6000
+  NFLoadBalancerRuleClassName: com.netflix.loadbalancer.BestAvailableRule
+
+zuul:
+  sensitiveHeaders: Cookie, Set-Cookie
+  ribbon-isolation-strategy: THREAD
+  retryable: false
+  hasAccessTokenFilter: false;
+
+# https://github.com/Netflix/Hystrix/wiki/Configuration
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 60000
+
+#  routes:
+#    template:
+#      path: /template/**
+#      serviceId: template
+#      stripPrefix: true
+
+#template:
+#  ribbon:
+#    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+#    listOfServers: http://172.18.0.20:9000,http://172.18.0.21:9000
+#    ConnectTimeout: 1000
+#    ReadTimeout: 3000
+#    MaxTotalHttpConnections: 500
+#    MaxConnectionsPerHost: 100
+
+info:
+  component: Router
+  description: Services Gateway
+
+endpoints:
+  shutdown:
+    enabled: true

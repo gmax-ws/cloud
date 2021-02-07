@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  oauth2:
+    volumes:
+      - $LOGGER_VOLUME
+    environment:
+      ENCRYPT_KEY: $ENCRYPT_KEY
+      SPRING_MAIN_BANNER_MODE: $SPRING_MAIN_BANNER_MODE
+      SERVICE_GATEWAY: $SERVICE_GATEWAY
+      OAUTH_PROVIDER: $OAUTH_PROVIDER
+      CLIENT_ID: $CLIENT_ID
+      CLIENT_SECRET: $CLIENT_SECRET
+      CLIENT_SCOPE: $CLIENT_SCOPE
+      KEYCLOAK_URL: $KEYCLOAK_URL
+      OAUTH_NAME: $OAUTH_NAME
+      OAUTH_PORT: $OAUTH_PORT
+      LOG_PATH: $LOG_PATH
+    build: ""
+    image: $OAUTH_IMAGE
+    container_name: $OAUTH_CONTAINER
+    restart: always
+    ports:
+      - $OAUTH_PORT:$OAUTH_PORT
+    networks:
+      ui:
+        ipv4_address: $OAUTH_IP
+    healthcheck:
+      test: nc -z -v 0.0.0.0 $OAUTH_PORT
+      interval: 5s
+      timeout: 1s
+      retries: 3
+
+networks:
+  cloud:
+    name: $NETWORK_NAME
+    ipam:
+      driver: default
+      config:
+        - subnet: $NETWORK_SUBNET
+          gateway: $NETWORK_GATEWAY

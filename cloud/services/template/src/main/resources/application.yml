@@ -1,0 +1,49 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:inbound
+    username: sa
+    password: ''
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming.strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate.dialect: org.hibernate.dialect.H2Dialect
+
+keycloak:
+  realm: ${KEYCLOAK_REALM}
+  auth-server-url: ${KEYCLOAK_URI}
+  ssl-required: external
+  resource: ${CLIENT_ID}
+  credentials:
+    secret: ${CLIENT_SECRET}
+  # use-resource-role-mappings: true
+  bearer-only: true
+
+server:
+  port: ${TEMPLATE_PORT}
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 10
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_URI}
+
+info:
+  component: ${spring.application.name}
+  description: Integration Service Template
+
+integration:
+  reqres:
+    unknown: https://reqres.in/api/unknown

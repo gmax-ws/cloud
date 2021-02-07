@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  nginx:
+    build: ""
+    image: $NGINX_IMAGE
+    container_name: $NGINX_CONTAINER
+    restart: always
+    ports:
+      - $NGINX_HTTP:$NGINX_HTTP
+      - $NGINX_HTTPS:$NGINX_HTTPS
+    networks:
+      cloud:
+        ipv4_address: $NGINX_IP
+    healthcheck:
+      test: nc -z -v 0.0.0.0 $KEYCLOAK_HTTP_PORT
+      interval: 5s
+      timeout: 1s
+      retries: 3
+
+networks:
+  cloud:
+    name: $NETWORK_NAME
+    ipam:
+      driver: default
+      config:
+        - subnet: $NETWORK_SUBNET
+          gateway: $NETWORK_GATEWAY
+

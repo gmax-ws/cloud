@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <title>Orders UI Application</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css"
+        th:href="@{/webjars/bootstrap/css/bootstrap.css}" />
+    <style>
+        button {width: 80px;}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1><b>Orders REST API Test</b></h1>
+        <hr />
+        <div th:if="!${authorized}">
+            <form th:action="@{/authorize}" method="post">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="username" style="font-size:small">Username</label>
+                        <input type="text" id="username" name="username" value="mag"
+                               class="form-control input-sm">
+                        <small class="form-text text-muted">mag / root</small>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password" style="font-size:small">Password</label>
+                        <input type="password" id="password" name="password" value="root"
+                               class="form-control input-sm">
+                    </div>
+                </div>
+                <input type="hidden" id="grant_type" name="grant_type" value="password">
+                <button type="submit" class="btn btn-primary btn-sm">Authorize</button>
+            </form>
+            <hr />
+            <small class="form-text text-muted">grant_type=password</small>
+            <hr />
+            <pre th:if="${error}" style="color:red;" th:text="${error}"></pre>
+        </div>
+        <div th:if="${authorized}">
+            <table cellpadding="2" cellspacing="1">
+                <tr>
+                    <td>
+                        <button onclick="getOrders()" class="btn btn-primary btn-sm">Get</button>
+                    </td>
+                    <td>
+                        [Method: GET]
+                    </td>
+                    <td>
+                        [URL: /orders/orders]
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button onclick="getOrder()" class="btn btn-primary btn-sm">Get</button>
+                    </td>
+                    <td>
+                        [Method: GET]
+                    </td>
+                    <td>
+                        [URL: /orders/order/{id}]
+                    </td>
+                    <td>
+                        <input type="text" placeholder="Enter order ID" id="order-get" size="10" required="required" value="1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button onclick="createOrder()" class="btn btn-primary btn-sm">Create</button>
+                    </td>
+                    <td>
+                        [Method: POST]
+                    </td>
+                    <td>
+                        [URL: /orders/order]
+                    </td>
+                    <td>
+                        <input type="text" placeholder="Enter order DATA" id="order-post" size="32" required="required" value='{"id": 1, "description": "new order"}' />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button onclick="updateOrder()" class="btn btn-primary btn-sm">Update</button>
+                    </td>
+                    <td>
+                        [Method: PUT]
+                    </td>
+                    <td>
+                        [URL: /orders/order]
+                    </td>
+                    <td>
+                        <input type="text" placeholder="Enter order DATA" id="order-put" size="32" required="required" value='{"id": 1, "description": "new description"}' />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button onclick="deleteOrder()" class="btn btn-primary btn-sm">Delete</button>
+                    </td>
+                    <td>
+                        [Method: DELETE]
+                    </td>
+                    <td>
+                        [URL: /orders/order/{id}]
+                    </td>
+                    <td>
+                        <input type="text" placeholder="Enter order ID" id="order-del" size="10" required="required" value="1">
+                    </td>
+                </tr>
+            </table>
+            <hr />
+            <pre style="color:green;" id="orders-success"></pre>
+            <pre style="color:red;" id="orders-error"></pre>
+            <hr />
+        </div>
+    </div>
+    <script src="/webjars/jquery/jquery.min.js" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script>
+        function clear() {
+            $('#orders-success').html('');
+            $('#orders-error').html('');
+        }
+
+        function getOrders() {
+            clear();
+            $.ajax({
+                url: '/orders/orders',
+                contentType: 'application/json',
+                success: function (data) {
+                    $('#orders-success').html(JSON.stringify(data));
+                },
+                error: function (jqXHR, exception) {
+                    $('#orders-error').html(jqXHR.responseText);
+                }
+            });
+        }
+
+        function getOrder() {
+            var uri = '/orders/order/' + $('#order-get').val();
+            clear();
+            $.ajax({
+                url: uri,
+                contentType: 'application/json',
+                success: function (data) {
+                    $('#orders-success').html(JSON.stringify(data));
+                },
+                error: function (jqXHR, exception) {
+                    $('#orders-error').html(jqXHR.responseText);
+                }
+            });
+        }
+
+        function createOrder() {
+            clear();
+            $.ajax({
+                url: '/orders/order',
+                type: 'post',
+                contentType: 'application/json',
+                data: $('#order-post').val(),
+                success: function (data) {
+                    $('#orders-success').html(JSON.stringify(data));
+                },
+                error: function (jqXHR, data) {
+                    $('#orders-error').html(jqXHR.responseText);
+                }
+            });
+        }
+
+        function updateOrder() {
+            clear();
+            $.ajax({
+                url: '/orders/order',
+                type: 'put',
+                contentType: 'application/json',
+                data: $('#order-put').val(),
+                success: function (data) {
+                    $('#orders-success').html(JSON.stringify(data));
+                },
+                error: function (jqXHR, data) {
+                    $('#orders-error').html(jqXHR.responseText);
+                }
+            });
+        }
+
+        function deleteOrder() {
+            var uri = '/orders/order/' + $('#order-del').val()
+            clear();
+            $.ajax({
+                url: uri,
+                type: 'delete',
+                contentType: 'application/json',
+                success: function (data) {
+                    $('#orders-success').html(JSON.stringify(data));
+                },
+                error: function (jqXHR, data) {
+                    $('#orders-error').html(jqXHR.responseText);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

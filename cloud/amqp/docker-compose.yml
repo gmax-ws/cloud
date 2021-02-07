@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  amqp:
+    volumes:
+      - $BUS_VOLUME
+    environment:
+      BUS_IP: $BUS_IP
+      BUS_PORT: $BUS_PORT
+    build: ""
+    image: $BUS_IMAGE
+    container_name: $BUS_CONTAINER
+    restart: always
+    ports:
+      - $BUS_PORT:$BUS_PORT
+    networks:
+      cloud:
+        ipv4_address: $BUS_IP
+    healthcheck:
+      test: nc -z -v 0.0.0.0 $BUS_IP
+      interval: 5s
+      timeout: 1s
+      retries: 3
+
+networks:
+  cloud:
+    name: $NETWORK_NAME
+    ipam:
+      driver: default
+      config:
+        - subnet: $NETWORK_SUBNET
+          gateway: $NETWORK_GATEWAY
+

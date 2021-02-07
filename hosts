@@ -1,0 +1,17 @@
+172.18.0.2 zuul.example.com
+172.18.0.10 eureka.example.com
+172.18.0.5 bus.example.com
+172.18.0.4 config.example.com
+172.18.0.3 turbine.example.com
+
+172.18.10.1 idam.example.com
+
+172.18.1.0 oauth.example.com
+172.18.1.1 ui1.example.com
+172.18.1.2 ui2.example.com
+172.18.1.3 ui3.example.com
+
+172.18.2.1 orders.example.com
+172.18.2.2 template.example.com
+
+172.18.20.3 kibana.example.com

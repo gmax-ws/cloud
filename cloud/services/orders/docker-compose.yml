@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  orders:
+    volumes:
+      - $LOGGER_VOLUME
+    environment:
+      ENCRYPT_KEY: $ENCRYPT_KEY
+      SPRING_MAIN_BANNER_MODE: $SPRING_MAIN_BANNER_MODE
+      CONFIG_ENABLED: $CONFIG_ENABLED
+      CONFIG_PROFILE: $CONFIG_PROFILE
+      CONFIG_SERVER: $CONFIG_SERVER
+      EUREKA_URI: $EUREKA_URI
+      ORDERS_NAME: $ORDERS_NAME
+      ORDERS_PORT: $ORDERS_PORT
+      KEYCLOAK_REALM: $KEYCLOAK_REALM
+      KEYCLOAK_URI: $KEYCLOAK_URI
+      CLIENT_ID: $CLIENT_ID
+      CLIENT_SECRET: $CLIENT_SECRET
+      LOG_PATH: $LOG_PATH
+    build: ""
+    image: $ORDERS_IMAGE
+    #    deploy:
+    #      replicas: $ORDERS_REPLICAS
+    container_name: $ORDERS_CONTAINER
+    restart: always
+    ports:
+      - $ORDERS_PORT
+    networks:
+      cloud:
+        ipv4_address: $ORDERS_IP
+    healthcheck:
+      test: nc -z -v 0.0.0.0 $ORDERS_PORT
+      interval: 5s
+      timeout: 1s
+      retries: 3
+
+networks:
+  cloud:
+    name: $NETWORK_NAME
+    ipam:
+      driver: default
+      config:
+        - subnet: $NETWORK_SUBNET
+          gateway: $NETWORK_GATEWAY

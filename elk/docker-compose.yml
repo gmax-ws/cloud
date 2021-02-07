@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+
+  elasticsearch:
+    volumes:
+      - /tmp/elasticsearch/data:/usr/share/elasticsearch/data
+    environment:
+      discovery.type: single-node
+    image: $ELK_SEARCH_IMAGE
+    container_name: $ELK_SEARCH_NAME
+    restart: always
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      cloud:
+        ipv4_address: $ELK_SEARCH_IP
+    healthcheck:
+      test: curl -I $ELK_SEARCH_SERVER
+      interval: 15s
+      timeout: 1s
+      retries: 3
+
+  logstash:
+    environment:
+      ELASTICSEARCH_HOSTS: $ELK_SEARCH_SERVER
+    image: $ELK_LOGSTASH_IMAGE
+    container_name: $ELK_LOGSTASH_NAME
+    restart: always
+    ports:
+      - 5044:5044
+      - 9600:9600
+    networks:
+      cloud:
+        ipv4_address: $ELK_LOGSTASH_IP
+    depends_on:
+      - elasticsearch
+    healthcheck:
+      test: curl -I ${ELK_LOGSTASH_SERVER}/?jvm
+      interval: 15s
+      timeout: 1s
+      retries: 3
+
+  kibana:
+    environment:
+      ELASTICSEARCH_HOSTS: $ELK_SEARCH_SERVER
+    image: $ELK_KIBANA_IMAGE
+    container_name: $ELK_KIBANA_NAME
+    restart: always
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    networks:
+      cloud:
+        ipv4_address: $ELK_KIBANA_IP
+    healthcheck:
+      test: curl -I $ELK_KIBANA_SERVER
+      interval: 15s
+      timeout: 1s
+      retries: 3
+
+  filebeat:
+    build: .
+    image: $ELK_FILEBEAT_IMAGE
+    container_name: $ELK_FILEBEAT_NAME
+    restart: always
+    volumes:
+      - /var/log/integration:/var/log/integration
+    depends_on:
+      - elasticsearch
+    networks:
+      cloud:
+        ipv4_address: $ELK_FILEBEAT_IP
+    healthcheck:
+      test: ps aux | grep '[f]ilebeat' || exit 1
+      interval: 15s
+      timeout: 1s
+      retries: 3
+
+networks:
+  cloud:
+    name: $NETWORK_NAME
+    ipam:
+      driver: default
+      config:
+        - subnet: $NETWORK_SUBNET
+          gateway: $NETWORK_GATEWAY
+

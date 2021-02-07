@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  turbine:
+    volumes:
+      - $LOGGER_VOLUME
+    environment:
+      ENCRYPT_KEY: $ENCRYPT_KEY
+      SPRING_MAIN_BANNER_MODE: $SPRING_MAIN_BANNER_MODE
+      CONFIG_ENABLED: $CONFIG_ENABLED
+      CONFIG_PROFILE: $CONFIG_PROFILE
+      CONFIG_SERVER: $CONFIG_SERVER
+      TURBINE_NAME: $TURBINE_NAME
+      TURBINE_PORT: $TURBINE_PORT
+      LOG_PATH: $LOG_PATH
+    build: ""
+    image: $TURBINE_IMAGE
+    container_name: $TURBINE_CONTAINER
+    restart: always
+    ports:
+      - $TURBINE_PORT:$TURBINE_PORT
+    networks:
+      cloud:
+        ipv4_address: $TURBINE_IP
+    healthcheck:
+      test: nc -z -v 0.0.0.0 $TURBINE_PORT
+      interval: 5s
+      timeout: 1s
+      retries: 3
+
+networks:
+  cloud:
+    name: $NETWORK_NAME
+    ipam:
+      driver: default
+      config:
+        - subnet: $NETWORK_SUBNET
+          gateway: $NETWORK_GATEWAY
+

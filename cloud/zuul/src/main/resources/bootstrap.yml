@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: ${ZUUL_NAME}
+  profiles:
+    active: ${CONFIG_PROFILE}
+  cloud:
+    config:
+      request-connect-timeout: 10000
+      request-read-timeout: 5000
+      uri: ${CONFIG_SERVER}
+      enabled: ${CONFIG_ENABLED}
+
+logging:
+  level:
+    root: INFO
+  path: ${LOG_PATH}
+  file:
+    name: ${logging.path}/${spring.application.name}.log

@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: ${OAUTH_NAME}
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          template-auth-code:
+            provider: ${OAUTH_PROVIDER}
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/authorized"
+            scope: ${CLIENT_SCOPE}
+          template-client-credentials:
+            provider: ${OAUTH_PROVIDER}
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+            authorization-grant-type: client_credentials
+            scope: ${CLIENT_SCOPE}
+          template-password:
+            provider: ${OAUTH_PROVIDER}
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+            authorization-grant-type: password
+            scope: ${CLIENT_SCOPE}
+        provider:
+          keycloak:
+            authorization-uri: ${KEYCLOAK_URL}/auth
+            token-uri: ${KEYCLOAK_URL}/token
+
+server:
+  port: ${OAUTH_PORT}
+
+logging:
+  level:
+    root: INFO
+  path: ${LOG_PATH}
+  file:
+    name: ${logging.path}/${spring.application.name}.log
+
+base-uri:
+  template: ${SERVICE_GATEWAY}/template/api/unknown
