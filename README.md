@@ -1,7 +1,7 @@
 # Spring Cloud Netflix microservices PoC
 
 ## Spring Boot 2.x
-## Hoxton.SR9 Spring Cloud dependencies
+## Hoxton.SR10 Spring Cloud dependencies
 
 - Spring Cloud Netflix microservices
   - Zuul - service gateway and router with load balancing.
