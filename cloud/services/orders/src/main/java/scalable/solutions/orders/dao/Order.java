@@ -1,4 +1,4 @@
-package scalable.solutions.orders.dto;
+package scalable.solutions.orders.dao;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

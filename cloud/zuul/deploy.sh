@@ -19,5 +19,5 @@ if $docker; then
   docker rm -f "$name"
   docker-compose up -d "$name"
 else
-  eval "java -jar $jarfile"
+  eval "java -jar target/$jarfile"
 fi
