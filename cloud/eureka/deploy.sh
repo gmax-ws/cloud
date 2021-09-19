@@ -17,7 +17,7 @@ if $docker; then
   # create docker file
   eval "dockerFile Dockerfile $from $jarfile"
   docker rm -f eureka
-  docker-compose up -d eureka
+  docker-compose up -d --build eureka
 else
   eval "java -jar target/$jarfile"
 fi

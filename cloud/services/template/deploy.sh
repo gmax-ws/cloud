@@ -18,7 +18,7 @@ if $docker; then
   eval "dockerFile Dockerfile $from $jarfile"
   # shellcheck disable=SC2086
   docker rm -f "$name"
-  docker-compose up -d "$name"
+  docker-compose up -d --build "$name"
 else
   eval "java -jar target/$jarfile"
 fi

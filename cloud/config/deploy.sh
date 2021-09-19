@@ -17,7 +17,7 @@ if $docker; then
   # create docker file
   eval "dockerFile Dockerfile $from $jarfile"
   docker rm -f "$name"
-  docker-compose up -d "$name"
+  docker-compose up -d --build "$name"
 else
   eval "java -jar target/$jarfile"
 fi

@@ -10,7 +10,6 @@ import scalable.solutions.orders.dao.Order;
 import scalable.solutions.orders.dao.OrderDTO;
 import scalable.solutions.orders.dao.OrderDao;
 
-
 @Service
 public class OrderService {
 
