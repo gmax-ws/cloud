@@ -1,4 +1,4 @@
-package scalable.solutions.orders.controlers;
+package scalable.solutions.orders.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

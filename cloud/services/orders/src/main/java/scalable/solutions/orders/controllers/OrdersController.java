@@ -1,6 +1,9 @@
-package scalable.solutions.orders.controlers;
+package scalable.solutions.orders.controllers;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +21,17 @@ import java.util.Collection;
         securedEnabled = true,
         jsr250Enabled = true)
 @RequestMapping("/api")
+@Api(value = "Orders", produces = "application/json")
 public class OrdersController {
 
     @Autowired
     private OrderService orderService;
 
     @ApiOperation(value = "Get all orders")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Orders resource found"),
+            @ApiResponse(code = 404, message = "Orders resource not found")
+    })
     @PreAuthorize("hasAnyRole('role_admin', 'role_user', 'role_developer')")
     @GetMapping(value = "/orders")
     public ResponseEntity<Collection<OrderDTO>> orders() {
@@ -31,6 +39,10 @@ public class OrdersController {
     }
 
     @ApiOperation(value = "Get order", response = OrderDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Order resource found"),
+            @ApiResponse(code = 404, message = "Order resource not found")
+    })
     @PreAuthorize("hasAnyRole('role_admin', 'role_user', 'role_developer')")
     @GetMapping(value = "/order/{orderId}")
     public ResponseEntity<OrderDTO> order(@PathVariable long orderId) {
@@ -38,6 +50,10 @@ public class OrdersController {
     }
 
     @ApiOperation(value = "Create new order", response = OrderDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Order resource found"),
+            @ApiResponse(code = 404, message = "Order resource not found")
+    })
     @PreAuthorize("hasAnyRole('role_admin', 'role_user', 'role_developer')")
     @PostMapping(value = "/order")
     public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO order) {
@@ -45,6 +61,10 @@ public class OrdersController {
     }
 
     @ApiOperation(value = "Update order", response = OrderDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Order resource found"),
+            @ApiResponse(code = 404, message = "Order resource not found")
+    })
     @PreAuthorize("hasAnyRole('role_admin', 'role_user', 'role_developer')")
     @PutMapping(value = "/order")
     public ResponseEntity<OrderDTO> updateOrder(@RequestBody OrderDTO order) {
@@ -52,6 +72,10 @@ public class OrdersController {
     }
 
     @ApiOperation(value = "Delete order", response = OrderDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Order resource found"),
+            @ApiResponse(code = 404, message = "Order resource not found")
+    })
     @PreAuthorize("hasRole('role_admin')")
     @DeleteMapping(value = "/order/{orderId}")
     public ResponseEntity<OrderDTO> deleteOrder(@PathVariable long orderId) {
