@@ -1,9 +1,12 @@
 package scalable.solutions.orders.controllers;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,22 +18,31 @@ import scalable.solutions.orders.service.OrderService;
 
 import java.util.Collection;
 
+import static scalable.solutions.orders.controllers.GlobalExceptionHandler.ErrorMessageData;
+
 @RestController
 @EnableGlobalMethodSecurity(
         prePostEnabled = true,
         securedEnabled = true,
         jsr250Enabled = true)
+@SecurityRequirement(name = "integration")
 @RequestMapping("/api")
-@Api(value = "Orders", produces = "application/json")
 public class OrdersController {
 
     @Autowired
     private OrderService orderService;
 
-    @ApiOperation(value = "Get all orders")
+    @Operation(description = "Get a list of all orders")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Orders resource found"),
-            @ApiResponse(code = 404, message = "Orders resource not found")
+            @ApiResponse(responseCode = "200", description = "Success",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = OrderDTO.class)))),
+            @ApiResponse(responseCode = "403", description = "Not authorized",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessageData.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessageData.class)))
     })
     @PreAuthorize("hasAnyRole('role_admin', 'role_user', 'role_developer')")
     @GetMapping(value = "/orders")
@@ -38,10 +50,20 @@ public class OrdersController {
         return new ResponseEntity<>(orderService.getOrders(), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get order", response = OrderDTO.class)
+    @Operation(description = "Find and retrieve an order")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Order resource found"),
-            @ApiResponse(code = 404, message = "Order resource not found")
+            @ApiResponse(responseCode = "200", description = "Order has been found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OrderDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Order not found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessageData.class))),
+            @ApiResponse(responseCode = "403", description = "Not authorized",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessageData.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessageData.class)))
     })
     @PreAuthorize("hasAnyRole('role_admin', 'role_user', 'role_developer')")
     @GetMapping(value = "/order/{orderId}")
@@ -49,10 +71,17 @@ public class OrdersController {
         return ResponseEntity.ok(orderService.getOrder(orderId));
     }
 
-    @ApiOperation(value = "Create new order", response = OrderDTO.class)
+    @Operation(description = "Create new order.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Order resource found"),
-            @ApiResponse(code = 404, message = "Order resource not found")
+            @ApiResponse(responseCode = "201", description = "Order has been created",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OrderDTO.class))),
+            @ApiResponse(responseCode = "403", description = "Not authorized",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessageData.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessageData.class)))
     })
     @PreAuthorize("hasAnyRole('role_admin', 'role_user', 'role_developer')")
     @PostMapping(value = "/order")
@@ -60,10 +89,20 @@ public class OrdersController {
         return new ResponseEntity<>(orderService.createOrder(order), HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Update order", response = OrderDTO.class)
+    @Operation(description = "Update an existing order.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Order resource found"),
-            @ApiResponse(code = 404, message = "Order resource not found")
+            @ApiResponse(responseCode = "200", description = "Order has been updated",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OrderDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Order not found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessageData.class))),
+            @ApiResponse(responseCode = "403", description = "Not authorized",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessageData.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessageData.class)))
     })
     @PreAuthorize("hasAnyRole('role_admin', 'role_user', 'role_developer')")
     @PutMapping(value = "/order")
@@ -71,10 +110,20 @@ public class OrdersController {
         return ResponseEntity.ok(orderService.updateOrder(order));
     }
 
-    @ApiOperation(value = "Delete order", response = OrderDTO.class)
+    @Operation(description = "Delete an existing order.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Order resource found"),
-            @ApiResponse(code = 404, message = "Order resource not found")
+            @ApiResponse(responseCode = "200", description = "Order has been deleted",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OrderDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Order not found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessageData.class))),
+            @ApiResponse(responseCode = "403", description = "Not authorized",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessageData.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessageData.class)))
     })
     @PreAuthorize("hasRole('role_admin')")
     @DeleteMapping(value = "/order/{orderId}")

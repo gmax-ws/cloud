@@ -57,7 +57,7 @@ function ui3() {
 }
 
 function oauth2() {
-  cd ./ui/oauth2 && ./deploy.sh
+  cd ./cloud/ui/oauth2 && ./deploy.sh
   eval "cd $wdir"
 }
 

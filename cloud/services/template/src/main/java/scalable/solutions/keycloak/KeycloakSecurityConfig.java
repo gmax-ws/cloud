@@ -28,7 +28,7 @@ public abstract class KeycloakSecurityConfig extends KeycloakWebSecurityConfigur
     }
 
     @Bean
-    public KeycloakConfigResolver KeycloakConfigResolver() {
+    public KeycloakConfigResolver keycloakConfigResolver() {
         return new KeycloakSpringBootConfigResolver();
     }
 }

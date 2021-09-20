@@ -10,6 +10,10 @@
   - Turbine - aggregates multiple Hystrix Metrics Streams
   - Service BUS
   - Microservices samples
+    - Documented with OpenAPI Swagger 3.0
+      - /v3/api-docs
+      - /v3/api-docs.yaml
+      - /swagger-ui.html
   - UI applications examples
 - ELK stack (log monitoring)
   - Elasticsearch
