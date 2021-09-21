@@ -1,3 +1,4 @@
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 # **Turbine Dashboard** #
 
 * Collect **Hystrix** streams from configured services and provide a centralized dashboard.

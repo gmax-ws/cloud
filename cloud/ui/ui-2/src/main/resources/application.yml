@@ -45,3 +45,4 @@ logging:
 
 base-uri:
   orders: ${SERVICE_GATEWAY}/orders/api
+  swagger: ${SERVICE_GATEWAY}/orders/swagger-ui.html

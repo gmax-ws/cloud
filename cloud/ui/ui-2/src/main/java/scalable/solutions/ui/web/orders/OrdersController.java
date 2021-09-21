@@ -15,11 +15,11 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/orders")
 public class OrdersController {
 
-    @Value("${base-uri.orders}")
-    private String ordersBaseUri;
-
     @Autowired
     HttpSession session;
+
+    @Value("${base-uri.orders}")
+    private String ordersBaseUri;
 
     @Autowired
     private RestTemplate restClient;

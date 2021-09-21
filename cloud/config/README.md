@@ -1,3 +1,4 @@
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 # **Configuration Server** #
 
 Configuration Server is a server which allow to keep application settings centralized.
@@ -21,7 +22,7 @@ $ ngrok http 8888
 
 
 The Bitbucket webhook will call the **/monitor** endpoint on **ngrok** server which will forward the request
-to specified port (**8888**) on the local machine. For more details please go to [https://ngrok.com](Link URL)
+to specified port (**8888**) on the local machine. For more details please go to [ngrok](https://ngrok.com)
 
 * Another feature is a **Service Bus** which is used to send refresh events to services registered with bus as listeners.
 The **Service Bus** require a transport system, a message broker like RabbitMQ, Kafka or Redis. We are using RabbitMQ for our POC.

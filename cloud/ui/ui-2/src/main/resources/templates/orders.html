@@ -1,102 +1,132 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
     <title>Orders UI Application</title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css"
-        th:href="@{/webjars/bootstrap/css/bootstrap.css}" />
+          th:href="@{/webjars/bootstrap/css/bootstrap.css}"/>
     <style>
         button {width: 80px;}
+
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1><b>Orders REST API Test</b></h1>
-        <hr />
-        <div>
-            <table cellpadding="2" cellspacing="1">
-                <tr>
-                    <td>
-                        <button onclick="getOrders()" class="btn btn-primary btn-sm">Get</button>
-                    </td>
-                    <td>
-                        [Method: GET]
-                    </td>
-                    <td>
-                        [URL: /orders/orders]
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button onclick="getOrder()" class="btn btn-primary btn-sm">Get</button>
-                    </td>
-                    <td>
-                        [Method: GET]
-                    </td>
-                    <td>
-                        [URL: /orders/order/{id}]
-                    </td>
-                    <td>
-                        <input type="text" placeholder="Enter order ID" id="order-get" size="10" required="required" value="1" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button onclick="createOrder()" class="btn btn-primary btn-sm">Create</button>
-                    </td>
-                    <td>
-                        [Method: POST]
-                    </td>
-                    <td>
-                        [URL: /orders/order]
-                    </td>
-                    <td>
-                        <input type="text" placeholder="Enter order DATA" id="order-post" size="32" required="required" value='{"id": 1, "description": "new order"}' />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button onclick="updateOrder()" class="btn btn-primary btn-sm">Update</button>
-                    </td>
-                    <td>
-                        [Method: PUT]
-                    </td>
-                    <td>
-                        [URL: /orders/order]
-                    </td>
-                    <td>
-                        <input type="text" placeholder="Enter order DATA" id="order-put" size="32" required="required" value='{"id": 1, "description": "new description"}' />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button onclick="deleteOrder()" class="btn btn-primary btn-sm">Delete</button>
-                    </td>
-                    <td>
-                        [Method: DELETE]
-                    </td>
-                    <td>
-                        [URL: /orders/order/{id}]
-                    </td>
-                    <td>
-                        <input type="text" placeholder="Enter order ID" id="order-del" size="10" required="required" value="1">
-                    </td>
-                </tr>
-            </table>
-            <hr />
-            <pre style="color:green;" id="orders-success"></pre>
-            <pre style="color:red;" id="orders-error"></pre>
-            <hr />
-        </div>
+<div class="container">
+    <h1><b>Orders REST API Test</b></h1>
+    <hr/>
+    <div>
+        <table cellpadding="2" cellspacing="1">
+            <tr>
+                <td>
+                    <button onclick="getOrders()" class="btn btn-primary btn-sm">Get</button>
+                </td>
+                <td>
+                    [Method: GET]
+                </td>
+                <td>
+                    [URL: /orders/orders]
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onclick="getOrder()" class="btn btn-primary btn-sm">Get</button>
+                </td>
+                <td>
+                    [Method: GET]
+                </td>
+                <td>
+                    [URL: /orders/order/{id}]
+                </td>
+                <td>
+                    <input type="text" placeholder="Enter order ID" id="order-get" size="10" required="required"
+                           value="1"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onclick="createOrder()" class="btn btn-primary btn-sm">Create</button>
+                </td>
+                <td>
+                    [Method: POST]
+                </td>
+                <td>
+                    [URL: /orders/order]
+                </td>
+                <td>
+                    <input type="text" placeholder="Enter order DATA" id="order-post" size="32" required="required"
+                           value='{"id": 1, "description": "new order"}'/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onclick="updateOrder()" class="btn btn-primary btn-sm">Update</button>
+                </td>
+                <td>
+                    [Method: PUT]
+                </td>
+                <td>
+                    [URL: /orders/order]
+                </td>
+                <td>
+                    <input type="text" placeholder="Enter order DATA" id="order-put" size="32" required="required"
+                           value='{"id": 1, "description": "new description"}'/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onclick="deleteOrder()" class="btn btn-primary btn-sm">Delete</button>
+                </td>
+                <td>
+                    [Method: DELETE]
+                </td>
+                <td>
+                    [URL: /orders/order/{id}]
+                </td>
+                <td>
+                    <input type="text" placeholder="Enter order ID" id="order-del" size="10" required="required"
+                           value="1">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onclick="token()" class="btn btn-warning btn-sm">Token</button>
+                </td>
+                <td>
+                    [Method: GET]
+                </td>
+                <td>
+                    [URL: /token]
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onclick="swagger()" class="btn btn-success btn-sm">Swagger</button>
+                </td>
+                <td>
+                    [Method: GET]
+                </td>
+                <td>
+                    [URL: /swagger]
+                </td>
+            </tr>
+        </table>
+        <hr/>
+        <pre style="color:green;" id="orders-success"></pre>
+        <pre style="color:red;" id="orders-error"></pre>
+        <pre style="color:green;" id="jwt-token"></pre>
+        <pre style="color:green;" id="jwt-header"></pre>
+        <pre style="color:green;" id="jwt-payload"></pre>
+        <hr/>
     </div>
-    <script src="/webjars/jquery/jquery.min.js" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script src="/webjars/bootstrap/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-    <script>
+</div>
+<script src="/webjars/jquery/jquery.min.js" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script src="/webjars/bootstrap/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script>
         function clear() {
             $('#orders-success').html('');
             $('#orders-error').html('');
@@ -178,7 +208,63 @@
                 }
             });
         }
-    </script>
+
+        function token() {
+            $.ajax({
+                url: '/token',
+                success: function (data) {
+                    $('#jwt-token').html(data);
+                    var parts = data.split('.');
+                    $('#jwt-header').html(base64_decode(parts[0]));
+                    $('#jwt-payload').html(base64_decode(parts[1]));
+                },
+                error: function (jqXHR, data) {
+                    $('#orders-error').html(jqXHR.responseText);
+                }
+            });
+        }
+
+        function swagger() {
+            $.ajax({
+                url: '/swagger',
+                success: function (data) {
+                    window.open(data, '_blank');
+                },
+                error: function (jqXHR, data) {
+                    $('#orders-error').html(jqXHR.responseText);
+                }
+            });
+        }
+
+        function base64_decode(s) {
+            var e = {}, i, k, v = [], r = '', w = String.fromCharCode;
+            var n = [ [65, 91], [97, 123], [48, 58], [43, 44], [47, 48] ];
+
+            for (z in n) {
+                for (i = n[z][0]; i < n[z][1]; i++) {
+                    v.push(w(i));
+                }
+            }
+
+            for (i = 0; i < 64; i++) {
+                e[v[i]] = i;
+            }
+
+            for (i = 0; i < s.length; i+=72) {
+                var b = 0, c, x, l = 0, o = s.substring(i, i+72);
+                for (x = 0; x < o.length; x++) {
+                    c = e[o.charAt(x)];
+                    b = (b << 6) + c;
+                    l += 6;
+                    while (l >= 8) {
+                        r += w((b >>> (l -= 8)) % 256);
+                    }
+                 }
+            }
+
+            return r;
+        }
+</script>
 </body>
 
 </html>
