@@ -36,9 +36,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-/**
- * @author Joe Grandja
- */
 @Configuration
 public class WebClientConfig {
 

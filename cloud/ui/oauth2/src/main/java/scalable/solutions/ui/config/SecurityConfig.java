@@ -23,49 +23,44 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-/**
- * @author Joe Grandja
- */
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	// @formatter:off
-	@Override
-	public void configure(WebSecurity web) {
-		web
-			.ignoring()
-				.antMatchers("/webjars/**");
+    // @formatter:off
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/webjars/**");
+    }
+    // @formatter:on
 
-	}
-	// @formatter:on
+    // @formatter:off
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .failureUrl("/login-error")
+                .permitAll()
+                .and()
+                .oauth2Client();
+    }
+    // @formatter:on
 
-	// @formatter:off
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-                .authorizeRequests()
-				.anyRequest().authenticated()
-				.and()
-			.formLogin()
-				.loginPage("/login")
-				.failureUrl("/login-error")
-				.permitAll()
-				.and()
-			.oauth2Client();
-	}
-	// @formatter:on
-
-	// @formatter:off
+    // @formatter:off
     @Bean
     public UserDetailsService users() {
-        UserDetails user = User.withDefaultPasswordEncoder()
-            .username("mag")
-            .password("root")
-            .roles("USER")
-            .build();
-        return  new InMemoryUserDetailsManager(user);
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        UserDetails user = User.withUsername("mag")
+                .password(encoder.encode("root"))
+                .roles("USER")
+                .build();
+        return new InMemoryUserDetailsManager(user);
     }
     // @formatter:on
 }

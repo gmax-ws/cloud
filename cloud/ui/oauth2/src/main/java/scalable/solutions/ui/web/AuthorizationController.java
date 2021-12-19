@@ -25,9 +25,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.clientRegistrationId;
 
-/**
- * @author Joe Grandja
- */
 @Controller
 public class AuthorizationController {
 

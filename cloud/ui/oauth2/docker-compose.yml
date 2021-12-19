@@ -23,7 +23,7 @@ services:
     ports:
       - $OAUTH_PORT:$OAUTH_PORT
     networks:
-      ui:
+      cloud:
         ipv4_address: $OAUTH_IP
     healthcheck:
       test: nc -z -v 0.0.0.0 $OAUTH_PORT
