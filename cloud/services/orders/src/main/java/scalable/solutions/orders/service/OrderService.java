@@ -28,7 +28,9 @@ public class OrderService {
 
     @Transactional
     public OrderDTO createOrder(OrderDTO order) {
-        Order entity = orderDao.save(new Order(order.getDescription()));
+        Order item = new Order();
+        item.setDescription(order.getDescription());
+        Order entity = orderDao.save(item);
         return OrderDTO.fromOrder(entity);
     }
 
