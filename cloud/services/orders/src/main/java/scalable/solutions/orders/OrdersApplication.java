@@ -48,10 +48,10 @@ public class OrdersApplication {
                     .csrf().disable()
                     .antMatcher("/**")
                     .authorizeRequests()
-                    .antMatchers("/actuator/**").permitAll()
-                    .antMatchers("/h2-console/**").permitAll()
-                    .antMatchers("/v3/api-docs/**").permitAll()
-                    .antMatchers("/swagger-ui/**").permitAll()
+                    .antMatchers("/actuator/**",
+                            "/h2-console/**",
+                            "/v3/api-docs/**",
+                            "/swagger-ui/**").permitAll()
                     .anyRequest().authenticated();
             // h2 console
             http.headers().frameOptions().disable();
